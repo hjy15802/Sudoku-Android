@@ -1,10 +1,8 @@
 package com.example.sudoku_logic.logic;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class SudokuGenerator {      // 답안, 문제지 만드는 모듈
     private SudokuBoard board;
