@@ -18,7 +18,6 @@ public class SudokuSolver {     // 답안 검증 용 모듈
             return;
         }
 
-
         int row = empty[0];
         int col = empty[1];
 
