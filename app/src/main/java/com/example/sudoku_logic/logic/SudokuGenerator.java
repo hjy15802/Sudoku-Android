@@ -15,10 +15,11 @@ public class SudokuGenerator {      // 답안, 문제지 만드는 모듈
 
     public SudokuBoard generatePuzzle(Difficulty diff) {    // 문제지 만드는 함수
         SudokuBoard fullBoard = generateSolution();     // 정답 생성
-        int hints = diff.getHintCount();                // 실제 퍼즐 생성
+        SudokuBoard puzzle = boardCopy(fullBoard);      // 복사해서 퍼즐 생성
+        int hints = diff.getHintCount();
 
-             // 힌트만큼 남기고 지우기
-        return fullBoard;
+        removeCells(puzzle, 81 - hints);        // 힌트만큼 남기고 지우기
+        return puzzle;
     }
 
     private void removeCells(SudokuBoard board, int rmvCells) {     // 문제지 만드는 과정

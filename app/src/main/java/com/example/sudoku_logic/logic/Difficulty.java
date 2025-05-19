@@ -12,5 +12,5 @@ public enum Difficulty {    // EASY, MEDIUM, HARD 세 단계에 대응하여 hin
     }
 
 
-    public int getHintCount() { return hintCount; } // 사용자가 임의로 힌트 수를 설정할 경우 사용
+    public int getHintCount() { return hintCount; }
 }
