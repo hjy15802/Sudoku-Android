@@ -23,12 +23,9 @@ public class SudokuBoard {      // 스도쿠 객체 정의
         return null;
     }
 
-    public boolean isValid(int row, int col, int num) {     // 룰에 맞는지 검증
-        // 가로줄 확인
-        for ( int i = 0; i < 9; i++ ) if ( board[row][i] == num ) return false;
-
-        // 세로줄 확인
-        for ( int i = 0; i < 9; i++ ) if ( board[i][col] == num ) return false;
+    public boolean isValid(int row, int col, int num) {         // 룰에 맞는지 검증
+        for ( int i = 0; i < 9; i++ ) if ( board[row][i] == num ) return false;     // 가로줄 확인
+        for ( int i = 0; i < 9; i++ ) if ( board[i][col] == num ) return false;     // 세로줄 확인
 
 
         // 서브 그리드(작은 박스) 확인
@@ -95,7 +92,6 @@ public class SudokuBoard {      // 스도쿠 객체 정의
         Collections.shuffle(nums);  // 리스트 내에서 섞기
         return nums;
     }
-
 
     public void setFixed(int row, int col, boolean isFixed) {       // 고정 힌트 추가 메소드
         fixed[row][col] = isFixed;
