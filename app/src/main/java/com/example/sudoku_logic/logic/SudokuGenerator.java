@@ -5,10 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class SudokuGenerator {      // 답안, 문제지 만드는 모듈
-    private SudokuBoard board;
 
     public SudokuBoard generateSolution() {     // 정답 만드는 함수
-        board = new SudokuBoard();      // 빈 답지 생성
+        SudokuBoard board = new SudokuBoard();      // 빈 답지 생성
         board.solve();                  // 답지 채워넣기
         return board;
     }
@@ -19,6 +18,15 @@ public class SudokuGenerator {      // 답안, 문제지 만드는 모듈
         int hints = diff.getHintCount();
 
         removeCells(puzzle, 81 - hints);        // 힌트만큼 남기고 지우기
+
+        for (int i = 0; i < 9; i++) {                   // 힌트인 셀은 고정된 상태로 설정
+            for (int j = 0; j < 9; j++) {
+                if (puzzle.getCell(i, j) != 0) {
+                    puzzle.setFixed(i, j, true);
+                }
+            }
+        }
+
         return puzzle;
     }
 
