@@ -5,7 +5,7 @@ public class SudokuSolver {     // 답안 검증 용 모듈
 
     public boolean hasUniqueSolution (SudokuBoard board) {      // 유일 답안인지 체크하는 함수
         solutionCount = 0;
-        countSolutions(board);      // 가능한 답안의 수 확인
+        countSolutions(board);          // 가능한 답안의 수 확인
         return ( solutionCount == 1 );  // 유일 답이라면 True 반환, 아니라면 False
     }
 

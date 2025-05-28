@@ -6,27 +6,27 @@ import java.util.List;
 
 public class SudokuGenerator {      // 답안, 문제지 만드는 모듈
 
-    public SudokuBoard generateSolution() {     // 정답 만드는 함수
+    public SudokuBoard generateSolution() {         // 정답 만드는 함수
         SudokuBoard board = new SudokuBoard();      // 빈 답지 생성
-        board.solve();                  // 답지 채워넣기
+        board.solve();                              // 답지 채워넣기
         return board;
     }
 
     public SudokuBoard generatePuzzle(Difficulty diff) {    // 문제지 만드는 함수
-        SudokuBoard fullBoard = generateSolution();     // 정답 생성
-        SudokuBoard puzzle = boardCopy(fullBoard);      // 복사해서 퍼즐 생성
+        SudokuBoard solutionBoard = generateSolution();     // 정답 생성
+        SudokuBoard puzzle = boardCopy(solutionBoard);      // 복사해서 퍼즐 생성
         int hints = diff.getHintCount();
 
-        removeCells(puzzle, 81 - hints);        // 힌트만큼 남기고 지우기
+        removeCells(puzzle, 81 - hints);            // 힌트만큼 남기고 지우기
 
-        for (int i = 0; i < 9; i++) {                   // 힌트인 셀은 고정된 상태로 설정
+        for (int i = 0; i < 9; i++) {                       // 힌트인 셀은 고정된 상태로 설정
             for (int j = 0; j < 9; j++) {
                 if (puzzle.getCell(i, j) != 0) {
                     puzzle.setFixed(i, j, true);
                 }
             }
         }
-
+        puzzle.setSolutionBoard(solutionBoard);
         return puzzle;
     }
 
@@ -55,7 +55,7 @@ public class SudokuGenerator {      // 답안, 문제지 만드는 모듈
 
             SudokuBoard clone = boardCopy(board);               // 복사본 생성 후
             if ( solver.hasUniqueSolution(clone) ) removed++;   // 유효하다면 제거
-            else board.setCell(row, col, tmp);                  // 그렇지 않으면 백업으로 복구
+            else board.setCell(row, col, tmp);                  // 그렇지 않으면 복구
         }
     }
 
