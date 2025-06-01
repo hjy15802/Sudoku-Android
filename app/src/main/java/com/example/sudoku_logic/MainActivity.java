@@ -3,7 +3,6 @@ package com.example.sudoku_logic;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.Gravity;
-import android.view.View;
 import android.graphics.Color;
 import android.widget.Button;
 import android.widget.Chronometer;
