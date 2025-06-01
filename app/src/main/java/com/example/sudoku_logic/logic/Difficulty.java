@@ -1,6 +1,7 @@
 package com.example.sudoku_logic.logic;
 
 public enum Difficulty {    // EASY, MEDIUM, HARD 세 단계에 대응하여 hintCount 변화
+    TEST(70),
     EASY(34),
     MEDIUM(28),
     HARD(22),

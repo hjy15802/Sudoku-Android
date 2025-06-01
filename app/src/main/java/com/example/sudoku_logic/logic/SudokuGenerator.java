@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class SudokuGenerator {      // 답안, 문제지 만드는 모듈
-
     public SudokuBoard generateSolution() {         // 정답 만드는 함수
         SudokuBoard board = new SudokuBoard();      // 빈 답지 생성
         board.solve();                              // 답지 채워넣기
