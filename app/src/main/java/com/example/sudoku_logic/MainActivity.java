@@ -1,5 +1,6 @@
 package com.example.sudoku_logic;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.Gravity;
@@ -18,7 +19,6 @@ import com.example.sudoku_logic.logic.SudokuGenerator;
 
 public class MainActivity extends AppCompatActivity {
     private SudokuBoard sudokuBoard;            // 스도쿠 보드 객체 (문제지 및 정답지 포함)
-
     private TextView[][] cellViews = new TextView[9][9];    // 9x9 보드의 각 셀을 나타내는 TextView 배열
 
     // 현재 선택된 셀의 행, 열 (-1이면 미선택)
@@ -26,19 +26,19 @@ public class MainActivity extends AppCompatActivity {
     private int selectedCol = -1;
 
 
-    private Chronometer chronometerTimer;   // 게임 진행 타이머 (퍼즐 시작부터 경과 시간 측정)
-    private boolean timerRunning = false;   // 타이머 작동 여부 (보드가 완료되면 false로 변경)
+    private Chronometer chronometerTimer;   // 게임 진행 타이머 (퍼즐 시작부터의 경과 시간 측정)
+    private boolean timerRunning = false;   // 타이머 작동 여부 (시작하면 true, 보드가 완료되면 false로)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Chronometer 초기화 및 시작 (게임 시작 시점 기준)
+        // Chronometer 초기화 및 시작
         chronometerTimer = findViewById(R.id.chronometerTimer);
         chronometerTimer.setBase(SystemClock.elapsedRealtime());
         chronometerTimer.start();
-        timerRunning = true;
+        timerRunning = true;    // 타이머 On
 
         // 스도쿠 보드 및 버튼 초기화
         initBoard();
@@ -46,10 +46,9 @@ public class MainActivity extends AppCompatActivity {
         initSpecialButtons();
     }
 
-    // 스도쿠 보드의 생성
-    private void initBoard() {
-        // 퍼즐 생성
-        SudokuGenerator generator = new SudokuGenerator();
+
+    private void initBoard() {      // 스도쿠 보드 생성
+        SudokuGenerator generator = new SudokuGenerator();  // 퍼즐 생성
         sudokuBoard = generator.generatePuzzle(Difficulty.MEDIUM);      //난이도 설정하는 부분
 
         // 보드를 담을 GridLayout 설정
@@ -58,11 +57,11 @@ public class MainActivity extends AppCompatActivity {
         gridLayout.setRowCount(9);
         gridLayout.setColumnCount(9);
 
-        // 화면 밀도에 따른 서브그리드 여백 계산
+
         final float scale = getResources().getDisplayMetrics().density;
         int subgridMargin = (int) (2 * scale + 0.5f);
 
-        // 9x9 셀 생성: 각 셀을 TextView로 만들어 GridLayout에 추가
+        // 9x9 셀 생성 / 각 셀을 TextView로 만들어 GridLayout에 추가
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
                 final int r = row;
@@ -76,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 int value = sudokuBoard.getCell(row, col);
                 cell.setText(value != 0 ? String.valueOf(value) : "");
 
-                // 서브그리드 경계 여백 설정
+                // 서브그리드 경계 여백
                 int leftMargin = (col % 3 == 0 && col != 0) ? subgridMargin : 0;
                 int topMargin = (row % 3 == 0 && row != 0) ? subgridMargin : 0;
                 int rightMargin = (col == 8) ? 0 : (col % 3 == 2 ? subgridMargin : 0);
@@ -90,11 +89,11 @@ public class MainActivity extends AppCompatActivity {
                 params.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
                 cell.setLayoutParams(params);
 
-                // 고정(힌트) 셀은 빨간색, 나머지 셀은 파란색으로 표시
+                // 고정셀(힌트)은 빨간색, 나머지 셀은 검은색으로 표시
                 if (sudokuBoard.isFixed(row, col)) {
                     cell.setTextColor(Color.RED);
                 } else {
-                    cell.setTextColor(Color.BLUE);
+                    cell.setTextColor(Color.BLACK);
                 }
 
                 // 셀 클릭 시 선택된 셀의 위치를 저장하고 하이라이트 처리
@@ -111,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 숫자 입력 버튼의 초기화
-    private void initNumberButtons() {
+    @SuppressLint("ResourceType")
+    private void initNumberButtons() {  // 숫자 입력 버튼 초기화
         for (int num = 1; num <= 9; num++) {
             int resId = getResources().getIdentifier("button" + num, "id", getPackageName());
             Button numButton = findViewById(resId);
@@ -123,11 +122,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 기능성 버튼의 초기화
-    private void initSpecialButtons() {
+    private void initSpecialButtons() { // 기능성 버튼(삭제, 선택 해제) 초기화
         Button deleteButton = findViewById(R.id.buttonDelete);
         if (deleteButton != null) {
-            deleteButton.setOnClickListener(v -> applyNumber(0)); // 0은 삭제 의미
+            deleteButton.setOnClickListener(v -> applyNumber(0)); // 0은 삭제 상태
         }
 
         Button deselectButton = findViewById(R.id.buttonDeselect);
@@ -145,13 +143,10 @@ public class MainActivity extends AppCompatActivity {
     // 사용자 입력 대상 셀 총 개수, 틀린 셀 개수, 초기 고정 셀 개수를 계산한 후
     // ResultDialogFragment 오버레이를 표시
     private void applyNumber(int number) {
-        // 셀이 선택되지 않았을 경우 경고 메시지
-        if (selectedRow == -1 || selectedCol == -1) {
-            Toast.makeText(this, "셀을 선택하세요.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        // 고정된(힌트) 셀은 수정 불가
-        if (sudokuBoard.isFixed(selectedRow, selectedCol)) {
+        if (selectedRow == -1 || selectedCol == -1) { return; } // 셀이 선택되지 않았을 경우 강제로 리턴
+
+
+        if (sudokuBoard.isFixed(selectedRow, selectedCol)) {    // 고정된 셀은 수정 불가
             Toast.makeText(this, "고정된 셀은 변경할 수 없습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -197,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateBoard() {
+    private void updateBoard() {    // 보드 내 값 갱신
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
                 int value = sudokuBoard.getCell(row, col);
