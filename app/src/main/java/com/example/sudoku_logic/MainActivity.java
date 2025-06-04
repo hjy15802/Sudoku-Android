@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initBoard() {      // 스도쿠 보드 생성
         SudokuGenerator generator = new SudokuGenerator();  // 퍼즐 생성
-        sudokuBoard = generator.generatePuzzle(Difficulty.MEDIUM);      //난이도 설정하는 부분
+        sudokuBoard = generator.generatePuzzle(Difficulty.HARD);      //난이도 설정하는 부분
 
         // 보드를 담을 GridLayout 설정
         GridLayout gridLayout = findViewById(R.id.gridLayoutBoard);
