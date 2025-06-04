@@ -1,6 +1,7 @@
 package com.example.sudoku_logic;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.Gravity;
@@ -145,6 +146,26 @@ public class Puzzle extends AppCompatActivity {
                 highlightSelectedCell();
             });
         }
+
+        Button resetButton = findViewById(R.id.buttonReset);
+        if (resetButton != null) {
+            resetButton.setOnClickListener(v -> {
+                // 타이머 정지
+                if (timerRunning) {
+                    chronometerTimer.stop();
+                    timerRunning = false;
+                }
+
+                // MainActivity로 이동
+                Intent intent = new Intent(Puzzle.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+                // 현재 액티비티 종료 (뒤로가기 눌러도 Puzzle으로 못 돌아오게)
+                finish();
+            });
+        }
+
     }
 
     // 선택된 셀에 주어진 숫자(또는 0)를 적용하고 보드를 갱신
